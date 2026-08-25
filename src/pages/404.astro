@@ -1,4 +1,5 @@
 ---
+import '../styles/global.css';
 ---
 
 <html lang="en">
@@ -6,12 +7,58 @@
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Page not found</title>
+		<title>Page not found — Rahul Raja Durai Murugan</title>
+		<meta name="description" content="404 — this page could not be found." />
+		<meta name="robots" content="noindex" />
 	</head>
 	<body>
-		<h1>Page not found</h1>
-		<p><a href="/">Back to home</a></p>
+		<a href="#main" class="skip-link">Skip to content</a>
+		<main id="main" class="not-found">
+			<p class="code">404</p>
+			<p class="joke sans">The agent went looking for this page. It didn't come back.</p>
+			<p class="wink mono">Brier score: 1.00 — the worst possible prediction.</p>
+			<a class="home-link sans" href="/">← Back home</a>
+		</main>
 	</body>
 </html>
+
+<style>
+  .not-found {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+    gap: 14px;
+  }
+  .code {
+    font-family: var(--font-display);
+    font-size: clamp(72px, 16vw, 160px);
+    font-weight: 700;
+    line-height: 1;
+    margin: 0;
+    color: var(--rose);
+  }
+  .joke {
+    font-size: clamp(16px, 2.4vw, 20px);
+    margin: 0;
+    max-width: 40ch;
+  }
+  .wink {
+    font-size: 12.5px;
+    opacity: 0.7;
+    margin: 0;
+  }
+  .home-link {
+    margin-top: 18px;
+    font-size: 13.5px;
+    color: var(--white);
+    text-decoration: none;
+    border-bottom: 1px solid var(--mauve-mid);
+  }
+  .home-link:hover { border-bottom-color: var(--rose); }
+</style>
