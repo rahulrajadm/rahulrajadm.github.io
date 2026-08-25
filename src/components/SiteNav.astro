@@ -2,21 +2,29 @@
 const { current = '' } = Astro.props;
 const isHome = current === '/';
 
-const links = [
-  { href: '/about', label: 'About' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/research', label: 'Research' },
+const projectLinks = [
+  { href: '/projects/job-search-pipeline', label: 'Job Search Pipeline' },
+  { href: '/projects/sports-forecasting-pricing-engine', label: 'Sports Forecasting Engine' },
 ];
 ---
 
 <nav class="site-nav sans" aria-label="Primary">
 	{!isHome && <a class="brand" href="/">Rahul Raja Durai Murugan</a>}
 	<ul>
-		{links.map((link) => (
-			<li>
-				<a href={link.href} aria-current={current === link.href ? 'page' : undefined}>{link.label}</a>
-			</li>
-		))}
+		<li>
+			<a href="/about" aria-current={current === '/about' ? 'page' : undefined}>About</a>
+		</li>
+		<li class="has-dropdown">
+			<a href="/projects" aria-current={current === '/projects' ? 'page' : undefined} aria-haspopup="true">Projects</a>
+			<ul class="dropdown">
+				{projectLinks.map((p) => (
+					<li><a href={p.href} aria-current={current === p.href ? 'page' : undefined}>{p.label}</a></li>
+				))}
+			</ul>
+		</li>
+		<li>
+			<a href="/research" aria-current={current === '/research' ? 'page' : undefined}>Research</a>
+		</li>
 	</ul>
 </nav>
 
@@ -29,6 +37,8 @@ const links = [
     gap: 10px 24px;
     padding: 18px 0 22px;
     font-size: 13px;
+    position: relative;
+    z-index: 10;
   }
   .brand {
     text-decoration: none;
@@ -52,4 +62,45 @@ const links = [
   }
   .site-nav a:hover { opacity: 1; border-bottom-color: var(--mauve-mid); }
   .site-nav a[aria-current='page'] { opacity: 1; border-bottom-color: var(--rose); }
+
+  .has-dropdown { position: relative; }
+
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 10px;
+    min-width: 220px;
+    background: var(--ink);
+    border: 1px solid var(--mauve-mid);
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+  }
+  .has-dropdown:hover .dropdown,
+  .has-dropdown:focus-within .dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown li { list-style: none; }
+  .dropdown a {
+    display: block;
+    padding: 8px 10px;
+    font-size: 12.5px;
+    opacity: 0.85;
+    border-bottom: none;
+    white-space: nowrap;
+  }
+  .dropdown a:hover,
+  .dropdown a:focus-visible {
+    opacity: 1;
+    background: rgba(198, 161, 163, 0.12);
+  }
 </style>

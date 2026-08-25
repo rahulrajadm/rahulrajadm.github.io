@@ -93,7 +93,7 @@ const calibrationPoints = [
 
 		<section>
 			<h2>What I'd change</h2>
-			<p>Right now only WNBA combo props are active — NBA and NFL are fully wired into the codebase (the pricing math and market config both already support them) but sit dormant, since running multiple sports at once would multiply API credit usage faster than the current budget comfortably absorbs. Turning them back on is a one-line config change, not a rebuild, but it needs either a higher API tier or a lower posting cadence to stay within budget — I'd rather ship that deliberately than flip it on and find out the hard way mid-month.</p>
+			<p>Right now only WNBA combo props are active — NBA and NFL are fully wired into the codebase (the pricing math and market config both already support them), but neither league is in season yet, so there's nothing live to price. Turning them on is a one-line config flag once their regular seasons start, not a rebuild. Credit budget is worth watching once multiple sports run concurrently, but the current 20,000/month plan has enough headroom that I don't expect it to be the actual constraint.</p>
 		</section>
 
 		<section class="links">
