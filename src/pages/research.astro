@@ -1,0 +1,109 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+	title="Research — Rahul Raja Durai Murugan"
+	description="Computational oncology research at the Oden Institute: mathematically modeling tumor response to chemotherapy from patient-derived xenograft data."
+	current="/research"
+>
+	<article class="research sans">
+		<header class="page-head">
+			<p class="eyebrow">Research</p>
+			<p class="dek">Mathematical modeling work from the Oden Institute, presented publicly at UT Austin's Undergraduate Research Forum. The manuscript is still in preparation — content here reflects only what's already been presented, nothing further along than that.</p>
+		</header>
+
+		<section class="entry">
+			<p class="status">
+				<span class="status-tag">Presented, not yet published</span>
+				Undergraduate Research Forum, UT Austin
+			</p>
+			<h1>Modeling Tumor Response to Paclitaxel and Carboplatin using Patient-Derived Xenografts: A Bayesian Calibration Approach</h1>
+			<p class="authors">Rahul Raja Durai Murugan, Elizabeth L. Dobrolecki, Michael T. Lewis, David A. Hormuth II, Thomas E. Yankeelov, Ernesto A. B. F. Lima</p>
+			<p class="affil">Oden Institute for Computational Engineering and Sciences &amp; Texas Advanced Computing Center, UT Austin · Lester and Sue Smith Breast Center &amp; Dan L. Duncan Cancer Center, Baylor College of Medicine</p>
+
+			<h2>Motivation</h2>
+			<p>Patient-derived xenografts (PDX) — tumor tissue from real patients grown in mice — are a way to test how a tumor might respond to treatment before it reaches a human patient. This project builds a mathematical model of tumor growth under a Paclitaxel + Carboplatin regimen, with a specific, practical goal: predicting whether — and how early — a given tumor will respond, using only the first few measurements of a treatment course.</p>
+
+			<h2>Approach</h2>
+			<p><b>Data.</b> Seven PDX lines, twelve mice each, tumor volume tracked longitudinally by caliper. Each line split into three arms: control (n=6), one-week treatment (n=3), and four-week treatment (n=3).</p>
+			<p><b>Model selection, not assumption.</b> Seven candidate growth functions were fit to the untreated (control) data and compared by AIC/BIC before picking one — the exponential model won, most consistent across all seven PDX lines. That became the base of the full treatment-response model, calibrated with a Bayesian approach per PDX line.</p>
+			<p><b>The actual question being asked.</b> Not just "does the model fit," but a more operational one: after how many measurements can the model reliably tell a responder from a non-responder? The predictive-performance analysis re-runs the classification after each additional data point to find that threshold.</p>
+
+			<figure class="figure">
+				<img
+					src="/images/research/model-vs-data-calibration.png"
+					alt="Seven scatter plots comparing model-predicted tumor volume against measured tumor volume, one per PDX line, each labeled with concordance correlation coefficient (CCC), Pearson correlation (PCC), and mean absolute percentage error (MAPE)."
+					width="1354"
+					height="766"
+					loading="lazy"
+				/>
+				<figcaption>Model-predicted vs. measured tumor volume, per PDX line. Fit quality varies a real amount — concordance correlation from 0.03 to 1.00, MAPE from 3.55% to 41.56% — shown as measured, not averaged into one number.</figcaption>
+			</figure>
+
+			<h2>Results</h2>
+			<p>The spread above is itself part of the finding: exponential growth describes some of these tumors' dynamics well and others poorly. That unevenness is exactly why the predictive-performance question matters more than a single goodness-of-fit number — and there, the result was more consistent: across the seven PDX lines, <b>six data points (18 days)</b> of measurement was enough for the model to correctly classify a tumor as a responder or non-responder to the drug combination.</p>
+			<p>Practically, that's the translational point: a clinician wouldn't need to wait out a full treatment course to know it isn't working — an 18-day read could be enough to change course to a different regimen earlier.</p>
+
+			<h2>Status &amp; materials</h2>
+			<p>Presented publicly at UT Austin's Undergraduate Research Forum. A manuscript covering this work is in preparation; nothing beyond what's shown here — all of it already public via the poster presentation itself — is being described ahead of publication.</p>
+			<p class="links"><a href="/downloads/lima-oden-urf-poster.pptx" target="_blank" rel="noopener noreferrer">Download the presented poster (.pptx) ↗</a></p>
+
+			<p class="ack">Acknowledgments: PDX data provided by the Dan L. Duncan Comprehensive Cancer Center at Baylor College of Medicine; HPC resources provided by the Texas Advanced Computing Center (TACC), UT Austin.</p>
+		</section>
+
+		<section class="entry secondary">
+			<h2 class="secondary-title">Also</h2>
+			<p><b>Embryo viability classification — EmGenisys.</b> ML and data-engineering work on a video-based embryo sex-prediction model, trained on 12,000+ videos, as part of the EmGender project. Client work under a proprietary data agreement — no metrics, data, or model details are shareable here. The role itself is listed on the <a href="/">home page timeline</a>.</p>
+		</section>
+	</article>
+</Layout>
+
+<style>
+  .research { padding: 12px 0 40px; }
+  .page-head { padding-bottom: 28px; border-bottom: 1px solid var(--mauve-mid); margin-bottom: 36px; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rose); margin: 0 0 10px; }
+  .dek { font-size: 15px; max-width: 68ch; margin: 0; opacity: 0.9; font-family: var(--font-display); }
+
+  .entry { margin-bottom: 44px; }
+  .entry.secondary { padding-top: 32px; border-top: 1px solid var(--mauve-mid); }
+
+  .status { display: flex; align-items: center; gap: 10px; font-size: 12px; opacity: 0.8; margin: 0 0 14px; }
+  .status-tag {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border: 1px solid var(--rose);
+    color: var(--rose);
+    padding: 3px 8px;
+  }
+
+  h1 {
+    font-size: clamp(21px, 3vw, 27px);
+    font-weight: 700;
+    line-height: 1.35;
+    margin: 0 0 14px;
+    font-family: var(--font-display);
+    max-width: 42ch;
+  }
+  .authors { font-size: 13px; opacity: 0.85; margin: 0 0 4px; }
+  .affil { font-size: 12px; opacity: 0.65; margin: 0 0 28px; max-width: 68ch; }
+
+  h2 { font-size: 13px; letter-spacing: 0.09em; text-transform: uppercase; margin: 28px 0 14px; opacity: 0.85; font-family: var(--font-body); }
+  .secondary-title { margin-top: 0; }
+
+  p { font-size: 14.5px; line-height: 1.65; max-width: 72ch; margin: 0 0 16px; opacity: 0.92; }
+  p b { color: var(--rose); font-weight: 700; opacity: 1; }
+  p:last-child { margin-bottom: 0; }
+
+  .figure { margin: 24px 0; border: 1px solid var(--mauve-mid); background: #FFFFFF; padding: 14px; }
+  .figure img { width: 100%; height: auto; display: block; }
+  .figure figcaption { font-size: 12px; color: var(--ink); opacity: 0.75; margin-top: 10px; line-height: 1.5; }
+
+  .links a { color: var(--rose); text-decoration: none; border-bottom: 1px solid var(--mauve-mid); font-size: 13.5px; }
+  .links a:hover { border-bottom-color: var(--rose); }
+
+  .ack { font-size: 12px; opacity: 0.6; font-style: italic; }
+
+  .entry.secondary a { color: var(--white); border-bottom: 1px solid var(--mauve-mid); text-decoration: none; }
+</style>
