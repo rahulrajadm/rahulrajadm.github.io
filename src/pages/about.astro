@@ -1,0 +1,130 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const timeline = [
+  { kind: 'Education', title: 'M.S. Engineering Data Science & AI', org: 'University of Houston', when: 'Aug 2026 – May 2028' },
+  { kind: 'Experience', title: 'Graduate Research Assistant', org: 'Office of Institutional Research, University of Houston', when: 'Aug 2026 – Present' },
+  { kind: 'Experience', title: 'Machine Learning Engineer', org: 'EmGenisys', when: 'Aug 2025 – May 2026' },
+  { kind: 'Experience', title: 'Undergraduate Research Assistant', org: 'Oden Institute, The University of Texas at Austin', when: 'Sep 2023 – May 2026' },
+  { kind: 'Education', title: 'B.S. Biomedical Engineering, Statistics and Data Science', org: 'The University of Texas at Austin', when: 'Aug 2022 – May 2026' },
+];
+
+const community = [
+  { org: 'Tamil Youth Leadership Program (TYLP)', role: 'Founder', when: '2017 – Present', body: 'Led the effort that got Tamil formally recognized as a high school credit language by the Texas Education Agency. Also organized community food drives and library initiatives.' },
+  { org: 'SEEK (Student Engineers Educating Kids)', role: 'Program Officer', when: '2023 – 2026', body: 'Mentored 100+ grade-school students per semester; coordinated 25+ college volunteers.' },
+  { org: 'Seva Charities', role: 'Events Officer', when: '2024 – 2026', body: 'Led a university-wide fundraiser — $13,000+ raised in the 2025–2026 cycle.' },
+];
+
+const credentials = [
+  { title: 'Claude Certified Architect — Foundations', org: 'Anthropic, issued Aug 2026', body: 'Agent design, Claude Agent SDK, Model Context Protocol, context management.' },
+  { title: 'AWS Bedrock', org: 'Hands-on', body: 'Model access, quota management, and deployment — practical experience, not a certification exam.' },
+];
+
+const honors = [
+  { title: "Engineering Dean's Masters Scholarship", org: 'University of Houston, 2026 – 2028' },
+  { title: 'Thomas J. Watson Memorial Scholarship', org: 'IBM, 2022 – 2026' },
+];
+---
+
+<Layout
+	title="About — Rahul Raja Durai Murugan"
+	description="Full background: education, experience, community work, and credentials for Rahul Raja Durai Murugan."
+	current="/about"
+>
+	<article class="about sans">
+		<header class="page-head">
+			<p class="eyebrow">About</p>
+		</header>
+
+		<section class="bio">
+			<p>I started in biomedical engineering because I wanted to work on problems where being wrong has real consequences — a tumor-growth model that's overconfident, a treatment-response prediction that's miscalibrated, those aren't abstract accuracy metrics, they're decisions a clinician might actually make. That's carried through everything since: modeling chemotherapy response in patient-derived xenografts at the Oden Institute, building an embryo-viability classifier at EmGenisys, and now a Graduate Research Assistantship at UH's Office of Institutional Research, doing the same kind of careful, accountable data work at an institutional scale.</p>
+			<p>The agent-infrastructure half of what I do grew out of a practical need, not a trend — I built an agentic job-search pipeline and a real-time sports-forecasting system because I wanted tools that ran themselves reliably, not because "agentic" was the framing of the moment. I'm a Claude Certified Architect (Foundations), and the part I actually care about there is the boring-sounding half: context management, failure recovery, state that survives a bad day — the stuff that decides whether an autonomous system is trustworthy enough to leave running unattended.</p>
+			<p>Outside of research and engineering, I founded the Tamil Youth Leadership Program in 2017, which led the effort that got Tamil formally recognized as a high school credit language by the Texas Education Agency — something that's mattered enough to keep doing for going on a decade.</p>
+		</section>
+
+		<section>
+			<h2>Timeline</h2>
+			<ul class="timeline">
+				{timeline.map((t) => (
+					<li>
+						<span class="kind mono">{t.kind}</span>
+						<span class="body">
+							<span class="title">{t.title}</span>
+							<span class="org">{t.org}</span>
+						</span>
+						<span class="when mono">{t.when}</span>
+					</li>
+				))}
+			</ul>
+		</section>
+
+		<section>
+			<h2>Community &amp; leadership</h2>
+			<ul class="stack">
+				{community.map((c) => (
+					<li>
+						<p class="entry-head"><b>{c.org}</b> — {c.role} <span class="when mono">{c.when}</span></p>
+						<p class="entry-body">{c.body}</p>
+					</li>
+				))}
+			</ul>
+		</section>
+
+		<section>
+			<h2>Credentials &amp; honors</h2>
+			<ul class="stack">
+				{credentials.map((c) => (
+					<li>
+						<p class="entry-head"><b>{c.title}</b> — {c.org}</p>
+						<p class="entry-body">{c.body}</p>
+					</li>
+				))}
+				{honors.map((h) => (
+					<li>
+						<p class="entry-head"><b>{h.title}</b> — {h.org}</p>
+					</li>
+				))}
+			</ul>
+		</section>
+
+		<p class="work-auth">Work authorization: F-1 Student authorized to work in the US on CPT — no employer sponsorship required.</p>
+	</article>
+</Layout>
+
+<style>
+  .about { padding: 12px 0 40px; }
+  .page-head { padding-bottom: 4px; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rose); margin: 0; }
+
+  .bio { padding: 20px 0 8px; border-bottom: 1px solid var(--mauve-mid); margin-bottom: 36px; }
+  .bio p { font-size: 15px; line-height: 1.7; max-width: 74ch; margin: 0 0 18px; opacity: 0.94; font-family: var(--font-display); }
+  .bio p:last-child { margin-bottom: 24px; }
+
+  section { margin-bottom: 40px; }
+  h2 { font-size: 13px; letter-spacing: 0.09em; text-transform: uppercase; margin: 0 0 18px; opacity: 0.85; }
+
+  .timeline { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--mauve-mid); }
+  .timeline li {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 16px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--mauve-mid);
+    align-items: baseline;
+  }
+  @media (max-width: 640px) {
+    .timeline li { grid-template-columns: 1fr; gap: 4px; }
+  }
+  .timeline .kind { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.6; }
+  .timeline .title { display: block; font-size: 14px; font-weight: 600; }
+  .timeline .org { display: block; font-size: 12.5px; opacity: 0.75; margin-top: 2px; }
+  .timeline .when { font-size: 12px; opacity: 0.8; white-space: nowrap; }
+
+  .stack { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 20px; }
+  .entry-head { font-size: 14px; margin: 0 0 4px; }
+  .entry-head b { color: var(--rose); font-weight: 700; }
+  .entry-head .when { opacity: 0.7; margin-left: 4px; }
+  .entry-body { font-size: 13.5px; line-height: 1.6; opacity: 0.88; margin: 0; max-width: 68ch; }
+
+  .work-auth { font-size: 12.5px; opacity: 0.7; font-style: italic; border-top: 1px solid var(--mauve-mid); padding-top: 20px; margin: 0; }
+</style>
