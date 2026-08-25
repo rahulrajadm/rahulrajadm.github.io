@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import SiteNav from '../components/SiteNav.astro';
 
 const timeline = [
   {
@@ -50,6 +51,7 @@ const calibrationPoints = [
 		<a href="#main" class="skip-link">Skip to content</a>
 
 		<div class="wrap">
+			<SiteNav current="/" />
 			<div class="page">
 				<aside class="sidebar sans" aria-label="Profile">
 					<div>
@@ -68,8 +70,8 @@ const calibrationPoints = [
 						<span class="k">Contact</span>
 						<span class="v">
 							<a href="mailto:rahulrdm13@gmail.com">email</a> &middot;
-							<a href="https://linkedin.com/in/rahulrajadm">linkedin</a> &middot;
-							<a href="https://github.com/rahulrajadm">github</a>
+							<a href="https://linkedin.com/in/rahulrajadm" target="_blank" rel="noopener noreferrer">linkedin</a> &middot;
+							<a href="https://github.com/rahulrajadm" target="_blank" rel="noopener noreferrer">github</a>
 						</span>
 					</div>
 					<div class="sb-field">
@@ -140,7 +142,7 @@ const calibrationPoints = [
 </html>
 
 <style>
-  .wrap { max-width: 980px; margin: 0 auto; padding: 40px 24px 96px; position: relative; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 16px 24px 96px; position: relative; }
 
   .page {
     border: 1px solid var(--mauve-mid);

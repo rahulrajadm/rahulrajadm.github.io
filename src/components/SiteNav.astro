@@ -1,0 +1,55 @@
+---
+const { current = '' } = Astro.props;
+const isHome = current === '/';
+
+const links = [
+  { href: '/about', label: 'About' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/research', label: 'Research' },
+];
+---
+
+<nav class="site-nav sans" aria-label="Primary">
+	{!isHome && <a class="brand" href="/">Rahul Raja Durai Murugan</a>}
+	<ul>
+		{links.map((link) => (
+			<li>
+				<a href={link.href} aria-current={current === link.href ? 'page' : undefined}>{link.label}</a>
+			</li>
+		))}
+	</ul>
+</nav>
+
+<style>
+  .site-nav {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 10px 24px;
+    padding: 18px 0 22px;
+    font-size: 13px;
+  }
+  .brand {
+    text-decoration: none;
+    color: var(--white);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .site-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+  }
+  .site-nav a {
+    text-decoration: none;
+    color: var(--white);
+    opacity: 0.8;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+  }
+  .site-nav a:hover { opacity: 1; border-bottom-color: var(--mauve-mid); }
+  .site-nav a[aria-current='page'] { opacity: 1; border-bottom-color: var(--rose); }
+</style>

@@ -1,0 +1,92 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const projects = [
+  {
+    slug: 'job-search-pipeline',
+    title: 'Automated Job Search Pipeline',
+    outcome: 'A daily-scheduled pipeline that scrapes, scores, and drafts applications against a real resume — 655 jobs scraped on its first run, cover letters generated in under 10 seconds.',
+    tags: ['Python', 'Claude API', 'Supabase', 'GitHub Actions', 'Playwright'],
+    repo: 'https://github.com/rahulrajadm/job-bot',
+  },
+  {
+    slug: 'sports-forecasting-pricing-engine',
+    title: 'Sports Forecasting & Market-Pricing Engine',
+    outcome: 'Live probability models compared against real sportsbook prices, with a calibration methodology fit from actual market data — 65.8% accuracy on a 2024 walk-forward backtest.',
+    tags: ['Python', 'XGBoost', 'Discord.py', 'The Odds API', 'SQLite'],
+    repo: 'https://github.com/rahulrajadm/sports-betting-analytics-suite',
+  },
+];
+---
+
+<Layout
+	title="Projects — Rahul Raja Durai Murugan"
+	description="Production ML and agentic systems: a real job-search pipeline and a live sports forecasting engine, both with real data and honest results."
+	current="/projects"
+>
+	<header class="page-head sans">
+		<p class="eyebrow">Projects</p>
+		<p class="dek">Two systems, both live and running against real data. Each page walks through the actual architecture decisions, not a polished summary.</p>
+	</header>
+
+	<ul class="project-grid">
+		{projects.map((p) => (
+			<li>
+				<article class="card">
+					<h2 class="sans"><a href={`/projects/${p.slug}`}>{p.title}</a></h2>
+					<p class="outcome sans">{p.outcome}</p>
+					<ul class="tags mono">
+						{p.tags.map((tag) => <li>{tag}</li>)}
+					</ul>
+					<div class="card-links sans">
+						<a class="read-more" href={`/projects/${p.slug}`}>Read the writeup →</a>
+						<a class="repo-link" href={p.repo} target="_blank" rel="noopener noreferrer">Repo ↗</a>
+					</div>
+				</article>
+			</li>
+		))}
+	</ul>
+</Layout>
+
+<style>
+  .page-head { padding: 12px 0 36px; border-bottom: 1px solid var(--mauve-mid); margin-bottom: 32px; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rose); margin: 0 0 10px; }
+  .dek { font-size: 15px; max-width: 62ch; margin: 0; opacity: 0.88; font-family: var(--font-display); }
+
+  .project-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 720px) { .project-grid { grid-template-columns: 1fr; } }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    height: 100%;
+    padding: 26px 24px;
+    border: 1px solid var(--mauve-mid);
+    background: var(--ink);
+    color: var(--white);
+  }
+  .card:hover { border-color: var(--rose); }
+
+  .card h2 { font-size: 18px; font-weight: 700; margin: 0; font-family: var(--font-display); }
+  .card h2 a { color: var(--white); text-decoration: none; }
+  .card h2 a:hover { text-decoration: underline; }
+  .card h2 a:focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; }
+
+  .outcome { font-size: 13.5px; line-height: 1.55; opacity: 0.85; margin: 0; flex-grow: 1; }
+
+  .tags { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; font-size: 11px; }
+  .tags li { border: 1px solid var(--mauve-mid); padding: 3px 8px; opacity: 0.85; }
+
+  .card-links { display: flex; gap: 18px; margin-top: 4px; }
+  .card-links a { font-size: 12.5px; color: var(--rose); text-decoration: none; border-bottom: 1px solid transparent; }
+  .card-links a:hover { border-bottom-color: var(--rose); }
+  .card-links a:focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; }
+</style>

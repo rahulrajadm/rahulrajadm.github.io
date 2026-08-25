@@ -1,0 +1,135 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+	title="Automated Job Search Pipeline — Rahul Raja Durai Murugan"
+	description="A daily-scheduled pipeline that scrapes job boards, scores listings against a real resume, and drafts tailored applications with Claude — with honest notes on where it is and isn't actually agentic."
+	current="/projects"
+>
+	<article class="project sans">
+		<header class="project-head">
+			<p class="eyebrow">Project · Automated systems</p>
+			<h1>Automated Job Search Pipeline</h1>
+			<p class="dek">A daily-scheduled pipeline that scrapes job boards, scores every listing against a real resume, and drafts tailored application materials — built to automate my own job search during graduation.</p>
+			<ul class="tags mono">
+				<li>Python</li><li>Claude API</li><li>Supabase</li><li>GitHub Actions</li><li>Playwright</li>
+			</ul>
+		</header>
+
+		<section>
+			<h2>Problem</h2>
+			<p>A real job search means checking half a dozen job boards daily, screening each listing against your own background, and writing application material tailored enough to matter — every step is repetitive but consequential enough that skipping it costs real opportunities. Doing that by hand, every day, for months, doesn't scale.</p>
+		</section>
+
+		<section>
+			<h2>Approach</h2>
+			<p>A five-stage pipeline, orchestrated by a daily scheduler (APScheduler locally, GitHub Actions in production, cron'd for 10:00 AM):</p>
+
+			<div class="diagram" role="img" aria-label="Pipeline diagram: Scheduler triggers Scrapers (LinkedIn, Indeed, ZipRecruiter, Handshake), which feed the Matcher (TF-IDF scoring against resume), which ranks the top 25 and routes them to two paths — the Generator (Claude Sonnet, writes cover letters) and the Applier (rule-based form answers, Claude Haiku fallback for open-ended questions) — both writing to the Tracker (Supabase, dedup and delivery state), which feeds the Bot (Telegram digest).">
+				<div class="d-row">
+					<div class="d-box">Scheduler<span>daily 10:00 AM</span></div>
+					<div class="d-arrow">→</div>
+					<div class="d-box">Scrapers<span>LinkedIn · Indeed · ZipRecruiter · Handshake</span></div>
+					<div class="d-arrow">→</div>
+					<div class="d-box">Matcher<span>TF-IDF vs. resume</span></div>
+				</div>
+				<div class="d-branch">
+					<div class="d-branch-line"></div>
+					<div class="d-branch-boxes">
+						<div class="d-box accent">Generator<span>Claude Sonnet — cover letters</span></div>
+						<div class="d-box accent">Applier<span>rules first, Claude Haiku fallback</span></div>
+					</div>
+				</div>
+				<div class="d-row">
+					<div class="d-box">Tracker<span>Supabase — dedup + delivery state</span></div>
+					<div class="d-arrow">→</div>
+					<div class="d-box">Bot<span>Telegram digest</span></div>
+				</div>
+			</div>
+
+			<p><b>Model tiering, not one model for everything.</b> Cover letters go to Claude Sonnet — higher-stakes, longer-form writing, worth the stronger model. The resume text is cached with prompt caching (<span class="mono">cache_control: ephemeral</span>) since it's identical across every job in a run. Form-filling is the opposite case: of roughly 40 recurring Easy Apply field types (name, work authorization, GPA, salary range, availability...), almost all are answered deterministically from a structured profile via keyword matching — no model call at all. Claude Haiku is the fallback, used only for the genuinely open-ended questions a keyword match can't cover. That split is a real cost and reliability decision, not an afterthought: deterministic logic doesn't hallucinate a GPA.</p>
+
+			<p><b>State that survives a bad day.</b> Supabase tracks which job URLs have already been seen (so nothing gets re-scored or re-sent), and separately tracks delivery status — if a Telegram send fails mid-run, the jobs are already saved, and a backlog command re-sends whatever didn't go out. Filtered-out and low-score jobs are kept, not discarded, in case the scoring model needs a second look later.</p>
+
+			<p><b>Failure is visible, not silent.</b> Each scraper source is wrapped individually — if LinkedIn's scraper throws, the run logs it and continues with the other three sources rather than crashing the whole pipeline. And if a run genuinely finds nothing new, it sends an explicit "No new jobs found today" message instead of going quiet, so silence in the channel is never ambiguous between "nothing new" and "the pipeline broke."</p>
+		</section>
+
+		<section>
+			<h2>Result</h2>
+			<div class="stat-row mono">
+				<div class="stat"><p class="v">655</p><p class="k sans">jobs, first run</p></div>
+				<div class="stat"><p class="v">0–95%</p><p class="k sans">match score range</p></div>
+				<div class="stat"><p class="v">63%</p><p class="k sans">average match score</p></div>
+				<div class="stat"><p class="v">&lt;10s</p><p class="k sans">per cover letter</p></div>
+			</div>
+			<p>Runs unattended on a daily GitHub Actions schedule. Everything below the top 25 matches isn't thrown away — it's retained as a scored, searchable record rather than silently dropped.</p>
+		</section>
+
+		<section>
+			<h2>What I'd change</h2>
+			<p>Being precise about what this actually is: it's not an MCP-based or tool-calling agent. Claude is called directly at two fixed points in the pipeline — it doesn't decide when to search, how to score, or what to draft next; the scheduler's control flow is fully deterministic, the model is doing text generation inside fixed slots, not making orchestration decisions. Calling that "agentic" without qualification would overstate it. The natural next iteration is MCP-izing the scraper, matcher, and generator as tools a model can actually call and sequence itself — closer to a real agent loop than a script that happens to call an LLM twice. I'd also want the LinkedIn Easy Apply automation (currently Playwright-driven, optional, off by default) to have a tighter human-in-the-loop review step before anything gets submitted — automating the drafting is fine to trust; automating the submit click is a different risk level entirely.</p>
+		</section>
+
+		<section class="links">
+			<h2>Links</h2>
+			<ul>
+				<li><a href="https://github.com/rahulrajadm/job-bot" target="_blank" rel="noopener noreferrer">github.com/rahulrajadm/job-bot</a></li>
+			</ul>
+		</section>
+	</article>
+</Layout>
+
+<style>
+  .project { padding: 12px 0 40px; }
+  .project-head { padding-bottom: 28px; border-bottom: 1px solid var(--mauve-mid); margin-bottom: 32px; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rose); margin: 0 0 10px; }
+  h1 { font-size: clamp(26px, 4vw, 34px); font-weight: 700; margin: 0 0 12px; font-family: var(--font-display); }
+  .dek { font-size: 15px; max-width: 68ch; margin: 0 0 18px; opacity: 0.9; font-family: var(--font-display); }
+
+  .tags { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; font-size: 11px; }
+  .tags li { border: 1px solid var(--mauve-mid); padding: 3px 8px; opacity: 0.85; }
+
+  section { margin-bottom: 40px; }
+  h2 { font-size: 13px; letter-spacing: 0.09em; text-transform: uppercase; margin: 0 0 16px; opacity: 0.85; font-family: var(--font-body); }
+  p { font-size: 14.5px; line-height: 1.65; max-width: 72ch; margin: 0 0 16px; opacity: 0.92; }
+  p b { color: var(--rose); font-weight: 700; opacity: 1; }
+  p:last-child { margin-bottom: 0; }
+
+  .diagram {
+    border: 1px solid var(--mauve-mid);
+    background: var(--ink);
+    padding: 24px 20px;
+    margin: 20px 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-x: auto;
+  }
+  .d-row { display: flex; align-items: stretch; gap: 10px; min-width: max-content; }
+  .d-box {
+    border: 1px solid var(--mauve-mid);
+    padding: 10px 14px;
+    font-size: 12.5px;
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 140px;
+  }
+  .d-box span { font-weight: 400; font-size: 10.5px; opacity: 0.75; font-family: var(--font-mono); }
+  .d-box.accent { border-color: var(--rose); }
+  .d-arrow { display: flex; align-items: center; opacity: 0.6; font-size: 14px; }
+  .d-branch { display: flex; align-items: center; gap: 10px; padding-left: 150px; margin: 4px 0; }
+  .d-branch-line { width: 20px; height: 1px; background: var(--mauve-mid); }
+  .d-branch-boxes { display: flex; gap: 10px; flex-wrap: wrap; }
+  @media (max-width: 640px) { .d-branch { padding-left: 0; } }
+
+  .stat-row { display: flex; gap: 32px; flex-wrap: wrap; margin-bottom: 18px; }
+  .stat .v { font-size: 22px; font-weight: 700; margin: 0; color: var(--rose); }
+  .stat .k { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.75; margin: 0; }
+
+  .links ul { list-style: none; margin: 0; padding: 0; }
+  .links a { color: var(--white); border-bottom: 1px solid var(--mauve-mid); text-decoration: none; font-size: 14px; }
+  .links a:hover { border-bottom-color: var(--rose); }
+</style>

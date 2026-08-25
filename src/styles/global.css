@@ -37,7 +37,6 @@ body {
     var(--mid-plum) 33%,
     var(--deep-plum) 62%,
     var(--ink) 100%);
-  background-attachment: fixed;
   min-height: 100vh;
 }
 
