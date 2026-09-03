@@ -69,10 +69,10 @@ const calibrationPoints = [
 			<SiteNav current="/" />
 			<div class="page">
 				<aside class="sidebar sans" aria-label="Profile">
-					<div>
+					<div class="sb-top">
 						<img class="sb-avatar" src="/images/avatar.png" alt="Rahul Raja Durai Murugan" width="120" height="120" />
 						<h1 class="sb-name">Rahul<br />Raja Durai Murugan</h1>
-						<p class="sb-tagline">Claude Certified Architect |<br />Applied AI and Agentic Systems</p>
+						<p class="sb-tagline">Claude Certified Architect<br />Applied AI and Agentic Systems</p>
 					</div>
 					<div class="sb-field">
 						<span class="k">Education</span>
@@ -193,7 +193,8 @@ const calibrationPoints = [
   }
   @media (max-width: 640px) { .sidebar { border-right: none; border-bottom: 1px solid var(--mauve-mid); } }
 
-  .sb-avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 1px solid var(--mauve-mid); margin-bottom: 14px; display: block; }
+  .sb-top { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .sb-avatar { width: 120px; height: 120px; border-radius: 18px; object-fit: cover; border: 1px solid var(--mauve-mid); margin-bottom: 14px; display: block; }
 
   .sb-name { font-size: 26px; font-weight: 700; margin: 0; line-height: 1.2; font-family: var(--font-display); }
   .sb-tagline { font-size: 12.5px; margin: 5px 0 0; opacity: 0.9; line-height: 1.4; }
